@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Our Anniversary</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display:ital,wght@0,400;1,600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --cherry-red: #d21f3c;
+            --wine-red: #6b0d1a;
+            --antique-cream: #fffdfa;
+        }
+
+        body {
+            margin: 0;
+            background-color: #fcf8f8;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Playfair Display', serif;
+            overflow-x: hidden;
+        }
+
+        /* --- PADLOCK GRADIENT --- */
+        #lock-screen {
+            text-align: center;
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .shackle {
+            width: 100px;
+            height: 120px;
+            border: 15px solid var(--wine-red);
+            border-bottom: none;
+            border-radius: 60px 60px 0 0;
+            margin: 0 auto -45px;
+            transition: transform 0.6s ease;
+        }
+
+        .heart-svg-container {
+            width: 260px;
+            margin: 0 auto;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
+        }
+
+        .lock-interface {
+            margin-top: -160px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .lock-label {
+            font-family: 'Dancing Script', cursive;
+            color: white;
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+        }
+
+        .inputs-container {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .digit-input {
+            width: 50px;
+            height: 65px;
+            font-size: 28px;
+            text-align: center;
+            border: 2px solid var(--wine-red);
+            border-radius: 10px;
+            background: white;
+            color: var(--cherry-red);
+            font-weight: bold;
+        }
+
+        .unlock-btn {
+            background: var(--wine-red);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-family: sans-serif;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 100px;
+        }
+
+        /* --- POSTCARD & POLKA DOTS --- */
+        #postcard-screen {
+            display: none;
+            opacity: 0;
+            width: 95%;
+            max-width: 850px;
+            background-color: var(--cherry-red);
+            background-image: radial-gradient(white 15%, transparent 16%);
+            background-size: 18px 18px;
+            padding: 20px;
+            transition: opacity 1s ease;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .inner-card {
+            background: var(--antique-cream);
+            padding: 30px;
+            display: flex;
+            flex-wrap: wrap; /* Good for mobile */
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .text-content {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+        }
+
+        .text-content h1 {
+            font-family: 'Dancing Script', cursive;
+            color: var(--wine-red);
+            font-size: 3rem;
+            margin: 0 0 15px 0;
+        }
+
+        .photo-frame {
+            background: white;
+            padding: 10px 10px 40px 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: rotate(-2deg);
+            max-width: 300px;
+        }
+
+        .photo-frame img {
+            width: 100%;
+            display: block;
+        }
+
+        .heart-float {
+            position: fixed;
+            bottom: -50px;
+            font-size: 24px;
+            pointer-events: none;
+            animation: moveUp 5s linear forwards;
+        }
+
+        @keyframes moveUp {
+            to { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="music-init" style="position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; display:flex; flex-direction:column; justify-content:center; align-items:center; color:white; text-align:center;">
+        <h2 style="font-family:'Dancing Script'">Ready to open your gift?</h2>
+        <button onclick="startApp()" style="padding:15px 30px; font-size:18px; border-radius:30px; border:none; background:#d21f3c; color:white; cursor:pointer; font-weight:bold;">❤️ Click to Start ❤️</button>
+        <p style="margin-top:10px; font-size:12px;">(This enables the music)</p>
+    </div>
+
+    <audio id="bg-music" loop>
+        <source src="song1.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="lock-screen">
+        <div class="shackle" id="shackle"></div>
+        <div class="heart-svg-container">
+            <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="lockGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#d21f3c" />
+                        <stop offset="100%" style="stop-color:#6b0d1a" />
+                    </linearGradient>
+                </defs>
+                <path fill="url(#lockGrad)" d="M250 450c-20-20-230-160-230-280 0-80 60-130 110-130 40 0 90 30 120 70 30-40 80-70 120-70 50 0 110 50 110 130 0 120-210 260-230 280z"/>
+            </svg>
+        </div>
+        
+        <div class="lock-interface">
+            <p class="lock-label">Our Date (MMDD)</p>
+            <div class="inputs-container">
+                <input type="number" class="digit-input" id="d1" oninput="move(this, 'd2')">
+                <input type="number" class="digit-input" id="d2" oninput="move(this, 'd3')">
+                <input type="number" class="digit-input" id="d3" oninput="move(this, 'd4')">
+                <input type="number" class="digit-input" id="d4" oninput="check()">
+            </div>
+            <button class="unlock-btn" onclick="check()">Click to Unlock ❤️</button>
+        </div>
+    </div>
+
+    <div id="postcard-screen">
+        <div class="inner-card">
+            <div class="text-content">
+                <h1>Happy 2 Years Together</h1>
+                <p>Two years since we signed those papers — a quiet moment that changed my life. I want you to know how deeply I love you and how grateful I am for every single day with you.</p>
+                <p>Living with you, loving you, sharing life with you — the laughs, the comfort, even the little challenges — has been everything I ever wanted. I have no regrets choosing you, and I hope you don’t either.</p>
+                <p>My heart still chooses you — completely, easily, without doubt.</p>
+                <p><i>I love you always❤️</i></p>
+            </div>
+            <div class="photo-side">
+                <div class="photo-frame">
+                    <img src="image_2.jpg">
+                    <p style="text-align:center; font-family:'Dancing Script'; font-size:1.4rem; color:var(--wine-red); margin-top:10px;"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function startApp() {
+            document.getElementById('music-init').style.display = 'none';
+            // Pre-load music so it's ready
+            const music = document.getElementById('bg-music');
+            music.play().then(() => {
+                music.pause(); // Just "warming up" the audio engine
+                music.currentTime = 0;
+            });
+        }
+
+        function move(current, nextId) {
+            if (current.value.length >= 1) {
+                document.getElementById(nextId).focus();
+            }
+            check();
+        }
+
+        function check() {
+            let val = document.getElementById('d1').value + 
+                      document.getElementById('d2').value + 
+                      document.getElementById('d3').value + 
+                      document.getElementById('d4').value;
+            if (val === "0404") {
+                doUnlock();
+            }
+        }
+
+        function doUnlock() {
+            document.getElementById('bg-music').play();
+            document.getElementById('shackle').style.transform = "translateY(-50px)";
+            
+            setTimeout(() => {
+                document.getElementById('lock-screen').style.opacity = "0";
+                setTimeout(() => {
+                    document.getElementById('lock-screen').style.display = "none";
+                    const card = document.getElementById('postcard-screen');
+                    card.style.display = "block";
+                    setTimeout(() => { 
+                        card.style.opacity = "1"; 
+                        setInterval(spawnHeart, 400);
+                    }, 50);
+                }, 600);
+            }, 500);
+        }
+
+        function spawnHeart() {
+            const h = document.createElement('div');
+            h.className = 'heart-float';
+            h.innerHTML = ['❤', '🌹', '✨'][Math.floor(Math.random() * 3)];
+            h.style.left = Math.random() * 100 + "vw";
+            h.style.color = '#d21f3c';
+            document.body.appendChild(h);
+            setTimeout(() => h.remove(), 5000);
+        }
+    </script>
+</body>
+</html>
